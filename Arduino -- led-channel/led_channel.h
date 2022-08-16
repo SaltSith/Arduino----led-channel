@@ -33,6 +33,6 @@ public:
 	time_t sunrise_time_get(void);
 	time_t sunset_time_get(void);
 
-	void handle(const time_t curret_time);
+	void handle(const time_t current_time);
 
 };
