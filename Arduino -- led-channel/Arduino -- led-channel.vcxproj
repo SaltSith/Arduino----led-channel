@@ -116,6 +116,9 @@
     <ClInclude Include="led_channel.h" />
     <ClInclude Include="__vm\.Arduino -- led-channel.vsarduino.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="led_channel.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
