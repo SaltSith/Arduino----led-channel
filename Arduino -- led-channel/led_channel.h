@@ -2,6 +2,9 @@
 
 #include "daytime.h"
 
+const uint8_t min_power = 0;
+const uint8_t max_power = 0xff;
+
 class led_channel {
 private:
 	const uint8_t pin;			/// Gpio PWM pin
