@@ -1,5 +1,7 @@
 #include "led_channel.h"
 
+#include <Arduino.h>
+
 void led_channel::set_power(const daytime_t daytime)
 {
 	bool update = true;
@@ -58,50 +60,77 @@ void led_channel::init(void)
 
 void led_channel::set_max_power(const uint8_t max_power, daytime_t daytime)
 {
+	if (daytime == DAY) {
+		this->max_day_power = max_power;
+	}
+	else if (daytime == NIGHT) {
+		this->max_night_power = max_power;
+	}
 }
 
 void led_channel::set_current_power_on_value(const uint8_t power)
 {
+	if ((power < min_power) || (power > max_power)) {
+		return;
+	}
+
+	this->current_power = power;
+	analogWrite(this->pin, this->current_power);
 }
 
 void led_channel::set_sunset(const time_t sunset)
 {
+	this->sunset = sunset;
 }
 
 void led_channel::set_sunrise(const time_t sunrise)
 {
+	this->sunrise = sunrise;
 }
 
 uint8_t led_channel::current_power_get(void)
 {
-	return uint8_t();
+
+	return this->current_power;
 }
 
 uint8_t led_channel::max_day_power_get(void)
 {
-	return uint8_t();
+
+	return this->max_day_power;
 }
 
 uint8_t led_channel::max_night_power_get(void)
 {
-	return uint8_t();
+
+	return this->max_night_power;
 }
 
 char led_channel::name_get(void)
 {
-	return 0;
+
+	return this->name;
 }
 
 time_t led_channel::sunrise_time_get(void)
 {
-	return time_t();
+
+	return this->sunrise;
 }
 
 time_t led_channel::sunset_time_get(void)
 {
-	return time_t();
+
+	return this->sunset;
 }
 
-void led_channel::handle(const time_t curret_time)
+void led_channel::handle(const time_t current_time)
 {
+	if (((current_time.hour * 60 + current_time.minute) >= (this->sunset.hour * 60 + this->sunset.minute)) &&
+		((current_time.hour * 60 + current_time.minute) < (this->sunrise.hour * 60 + this->sunrise.minute))) {
+		this->set_power(DAY);
+	}
+	else {
+		this->set_power(NIGHT);
+	}
 }
