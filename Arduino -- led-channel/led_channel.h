@@ -16,7 +16,7 @@ private:
 	void set_power(const daytime_t daytime);
 
 public:
-	led_channel(uint8_t pin, char chn, uint8_t max_day_power, uint8_t max_night_power, time_t sunrise, time_t sunset);
+	led_channel(const uint8_t pin, const char name, const uint8_t max_day_power, const uint8_t max_night_power, const time_t sunrise, const time_t sunset);
 	~led_channel();
 
 	void init(void);
