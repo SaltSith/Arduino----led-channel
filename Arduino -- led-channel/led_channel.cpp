@@ -126,8 +126,11 @@ time_t led_channel::sunset_time_get(void)
 
 void led_channel::handle(const time_t current_time)
 {
-	if (((current_time.hour * 60 + current_time.minute) >= (this->sunset.hour * 60 + this->sunset.minute)) &&
-		((current_time.hour * 60 + current_time.minute) < (this->sunrise.hour * 60 + this->sunrise.minute))) {
+	uint16_t current = current_time.hour * 60 + current_time.minute;
+	uint16_t sunrise = this->sunrise.hour * 60 + this->sunrise.minute;
+	uint16_t sunset = this->sunset.hour * 60 + this->sunset.minute;
+
+	if (current > sunrise && current < sunset) {
 		this->set_power(DAY);
 	}
 	else {
