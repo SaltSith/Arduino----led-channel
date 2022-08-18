@@ -38,7 +38,7 @@ void led_channel::set_power(const daytime_t daytime)
 }
 
 
-led_channel::led_channel(const uint8_t pin, const char name, const uint8_t max_day_power, const uint8_t max_night_power, const time_t sunrise, const time_t sunset):pin(pin), name(name)
+led_channel::led_channel(const uint8_t pin, const char name, const uint8_t max_day_power, const uint8_t max_night_power, const time_t sunrise, const time_t sunset, const uint8_t sleep):pin(pin), name(name)
 {
 	this->current_power = 0;
 	this->max_day_power = max_day_power;
@@ -46,6 +46,8 @@ led_channel::led_channel(const uint8_t pin, const char name, const uint8_t max_d
 	
 	this->sunrise = sunrise;
 	this->sunset = sunset;
+
+	this->sleep = sleep;
 }
 
 led_channel::~led_channel()
@@ -124,16 +126,21 @@ time_t led_channel::sunset_time_get(void)
 	return this->sunset;
 }
 
-void led_channel::handle(const time_t current_time)
+void led_channel::handle(const time_extendet_t current_time)
 {
 	uint16_t current = current_time.hour * 60 + current_time.minute;
 	uint16_t sunrise = this->sunrise.hour * 60 + this->sunrise.minute;
 	uint16_t sunset = this->sunset.hour * 60 + this->sunset.minute;
+	daytime_t daytime = NIGHT;
+	static uint32_t last = 0;
 
 	if (current > sunrise && current < sunset) {
-		this->set_power(DAY);
+		daytime = DAY;
 	}
-	else {
-		this->set_power(NIGHT);
+
+	if ((current_time.hour * 60 * 60 + current_time.minute * 60 + current_time.second) - last > this->sleep) {
+		this->set_power(daytime);
 	}
+
+	last = current_time.hour * 60 * 60 + current_time.minute * 60 + current_time.second;
 }

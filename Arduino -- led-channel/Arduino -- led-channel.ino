@@ -6,10 +6,9 @@
 
 #include "led_channel.h"
 
-led_channel channel_A(7, 'A', 240, 15, (time_t) { 10, 12 }, (time_t) { 20, 25 });
+led_channel channel_A(7, 'A', 120, 15, (time_t) { 10, 12 }, (time_t) { 20, 25 }, 5);
 
-
-time_t compute_time(void)
+time_extendet_t compute_time(void)
 {
 	static uint8_t h = 8, m = 0, s = 0;
 
@@ -30,7 +29,7 @@ time_t compute_time(void)
 
 	Serial.println(String(h) + ":" + String(m) + ":" + String(s));
 
-	return time_t{ h, m };
+	return time_extendet_t{ h, m, s };
 }
 
 

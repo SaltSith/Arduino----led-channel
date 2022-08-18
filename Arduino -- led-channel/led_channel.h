@@ -17,9 +17,9 @@ private:
 
 	const char name;			/// Led channel name
 	void set_power(const daytime_t daytime);
-
+	uint8_t sleep;			    /// time in seconds between chenginf power of 1 step
 public:
-	led_channel(const uint8_t pin, const char name, const uint8_t max_day_power, const uint8_t max_night_power, const time_t sunrise, const time_t sunset);
+	led_channel(const uint8_t pin, const char name, const uint8_t max_day_power, const uint8_t max_night_power, const time_t sunrise, const time_t sunset, const uint8_t sleep);
 	~led_channel();
 
 	void init(void);
@@ -36,6 +36,6 @@ public:
 	time_t sunrise_time_get(void);
 	time_t sunset_time_get(void);
 
-	void handle(const time_t current_time);
+	void handle(const time_extendet_t current_time);
 
 };
